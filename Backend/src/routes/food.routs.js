@@ -13,6 +13,8 @@ const routes= express.Router()
 
 routes.post("/",authMiddeware.authFoodPartnerMiddeware, upload.single("video"),foodController.createFood)
 
+routes.get("/",authMiddeware.authUserMiddleware,foodController.getFoodItem)
+
 
 
 

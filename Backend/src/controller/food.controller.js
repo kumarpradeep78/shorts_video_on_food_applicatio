@@ -26,6 +26,21 @@ const storageService=require("../services/storage.service")
     })
  }
 
+async function getFoodItem(req,res) {
+
+  
+
+  const foodItem= await foodModel.find({})
+  
+  res.status(201).json({
+    message:" Food data fetched Successfully",
+    foodItem
+  })
 
 
- module.exports={createFood} 
+
+
+  
+}
+
+ module.exports={createFood, getFoodItem} 
