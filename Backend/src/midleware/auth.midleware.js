@@ -1,4 +1,5 @@
 const foodPartnerModel=require("../models/foodPartner.model");
+const userModel= require("../models/user.model")
 const jwt= require("jsonwebtoken");
 
 
@@ -29,4 +30,37 @@ async function  authFoodPartnerMiddeware(req,res,next){
     }
 }
 
-module.exports={authFoodPartnerMiddeware}
+
+async function authUserMiddleware(req,res,next){
+
+    const token=req.cookies.token
+
+    if(!token){
+        return res.status(401).json({
+            message:"User Should sing in first"
+        })
+    }
+
+     try{ //if token verify then the data in token also assing/return to decoded else error
+        const decoded= jwt.verify(token,process.env.JWT_SECRET)
+        const user=  await userModel.findById(decoded.id)
+
+        req.user=user
+
+        next()
+
+
+    }
+    catch(err){
+        return res.status(401).json({
+            message:"INvalid Token"
+        })
+
+    }
+}
+
+
+
+
+
+module.exports={authFoodPartnerMiddeware,authUserMiddleware}
