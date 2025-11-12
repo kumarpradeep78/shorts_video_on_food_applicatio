@@ -10,8 +10,22 @@ const storageService=require("../services/storage.service")
     const result= await storageService.uploadFile(req.file.buffer.toString('base64'),uuid())
     console.log("-------Result---------")
    console.log(result)
-    res.send("Food item created")
+    
+
+     const foodItem=await foodModel.create({
+      name:req.body.name,
+      video:result.url,
+      description:req.body.description,
+      foodPartner: req.foodPartner._id
+
+    })
+
+    res.status(201).json({
+      message: "Food video uploaded successfully",
+      food: foodItem
+    })
  }
+
 
 
  module.exports={createFood} 
